@@ -1,0 +1,22 @@
+#!/bin/bash -e
+
+ORG_PATH="github.com/kelseyhightower"
+REPO_PATH="${ORG_PATH}/flannel-route-manager"
+
+if [ ! -h gopath/src/${REPO_PATH} ]; then
+        mkdir -p gopath/src/${ORG_PATH}
+        ln -s ../../../.. gopath/src/${REPO_PATH} || exit 255
+fi
+
+export GOBIN=${PWD}/bin
+export GOPATH=${PWD}/gopath:${PWD}/Godeps/_workspace
+
+eval $(go env)
+
+if [ ${GOOS} = "linux" ]; then
+	echo "Building flannel-route-manager..."
+	go build -o ${GOBIN}/flannel-route-manager ${REPO_PATH}
+else
+	echo "Not on Linux - skipping flannel-route-manager build"
+fi
+
