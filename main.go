@@ -16,6 +16,7 @@ import (
 	"time"
 
 	"github.com/kelseyhightower/flannel-route-manager/backends/google"
+	"github.com/kelseyhightower/flannel-route-manager/backends/stdout"
 
 	"github.com/coreos/go-etcd/etcd"
 )
@@ -46,6 +47,11 @@ func main() {
 	switch backend {
 	case "google":
 		routeManager, err = google.New()
+		if err != nil {
+			log.Fatal(err)
+		}
+	case "stdout":
+		routeManager, err = stdout.New()
 		if err != nil {
 			log.Fatal(err)
 		}
